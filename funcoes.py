@@ -10,3 +10,22 @@ SELECT * FROM "Papel";
 resultado = cursor.fetchall()
 
 print(resultado)
+
+def menu():
+    print("-----------------------------------------------------------------------")
+    print("MENU DE LOGIN")
+    print("-----------------------------------------------------------------------")
+    opcao = input("SELECIONE UMA OPÇÃO\n1 - LOGIN\n2 - FAZER CADASTRO\n3 - SAIR")
+    match opcao:
+        case "1":
+            print("OI") 
+
+        case "2":
+            print("OI") 
+
+        case "3":
+            print("OI") 
+
+        case _:
+            print("OI") 
+    

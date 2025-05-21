@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS "Papel"(
     ,"DataAtualizacao" TIMESTAMP NULL
 );
 
-INSERT INTO "Papel"("Descricao", "DataCriacao") VALUES('Professor', 'Aluno');
+INSERT INTO "Papel"("Descricao", "DataCriacao") 
+VALUES('Professor', NOW())
+, ('Aluno', NOW());
 
 CREATE TABLE IF NOT EXISTS "Usuario"(
     "Id" SERIAL PRIMARY KEY
@@ -25,6 +27,11 @@ CREATE TABLE IF NOT EXISTS "Permissao"(
     ,"DataAtualizacao" TIMESTAMP NULL
 );
 
+INSERT INTO "Permissao"("Descricao", "DataCriacao")
+VALUES("Read", NOW())
+,("Write", NOW())
+,("Read only", NOW());
+
 CREATE TABLE IF NOT EXISTS "PapelPermissao"(
     "IdPapel" SERIAL NOT NULL REFERENCES "Papel"("Id")
     ,"IdPermissao" INT NOT NULL REFERENCES "Permissao"("Id")
@@ -32,17 +39,32 @@ CREATE TABLE IF NOT EXISTS "PapelPermissao"(
     ,"DataAtualizacao" TIMESTAMP NULL
 );
 
+INSERT INTO "PapelPermissao"("IdPapel", "IdPermissao", "DataCriacao")
+VALUES(1, 1, NOW())
+,(1, 2, NOW())
+(2, 3, NOW());
+
+CREATE TABLE IF NOT EXISTS "LogsAuditoria"(
+    "Id" SERIAL PRIMARY KEY
+    ,"Log" TEXT NOT NULL
+);
 
 ----------------------------------- CÓDIGO DAS FUNCTIONS ------------------------------------
 
--- CREATE OR REPLACE FUNCTION func_atualiza_data()
---         BEGIN
---              UPDATE TG_TABLE_NAME SET DataAtualizacao = NOW()
---         END;
--- LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION func_insert_log(log_insert TEXT)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$    
+BEGIN
+    INSERT INTO "LogsAuditoria"("Log") VALUES(log_insert);
+END;
+$$;
 
-
--- CREATE TRIGGER trg_atualiza_horario_pos_mudanca
--- AFTER UPDATE ON TG_TABLE_NAME
-
--- UPDATE @
+-- CREATE OR REPLACE FUNCTION func_insert_log(log_insert TEXT)
+-- RETURNS VOID
+-- LANGUAGE plpgsql
+-- AS $$    
+-- BEGIN
+--     INSERT INTO "LogsAuditoria"("Log") VALUES(log_insert);
+-- END;
+-- $$;
